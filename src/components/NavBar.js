@@ -1,23 +1,25 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Route, useRouteMatch } from "react-router-dom";
+import MoviesList from "./MoviesList";
+import MovieShow from "./MovieShow";
 
-function NavBar() {
+function MoviesPage({ movies }) {
+  const match = useRouteMatch();
+
   return (
-    <div
-      style={{
-        borderBottom: "2px solid black",
-        paddingBottom: "10px",
-        marginBottom: "12px",
-      }}
-    >
-      <NavLink style={{ marginRight: "10px" }} to="/">
-        Home
-      </NavLink>
-      <NavLink style={{ marginRight: "10px" }} to="/movies">
-        Movies
-      </NavLink>
+    <div>
+      <MoviesList movies={movies} />
+
+      {/* Adding code to show a message to the user to select a movie if they haven't yet */}
+      <Route exact path={match.url}>
+        <h3>Choose a movie from the list above</h3>
+      </Route>
+
+      <Route path={`${match.url}/:movieId`}>
+        <MovieShow movies={movies} />
+      </Route>
     </div>
   );
 }
 
-export default NavBar;
+export default MoviesPage;
